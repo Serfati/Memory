@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/.Rider2019.2/system/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2019.2/system/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_Components.-963408965.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+      <e p="ALU.cs" t="Include" />
+      <e p="AndGate.cs" t="Include" />
+      <e p="BitwiseAndGate.cs" t="Include" />
+      <e p="BitwiseDemux.cs" t="Include" />
+      <e p="BitwiseMultiwayDemux.cs" t="Include" />
+      <e p="BitwiseMultiwayMux.cs" t="Include" />
+      <e p="BitwiseMux.cs" t="Include" />
+      <e p="BitwiseNotGate.cs" t="Include" />
+      <e p="BitwiseOrGate.cs" t="Include" />
+      <e p="BitwiseTwoInputGate.cs" t="Include" />
+      <e p="Clock.cs" t="Include" />
+      <e p="Component.cs" t="Include" />
+      <e p="Components.csproj" t="IncludeRecursive" />
+      <e p="Components.sln" t="IncludeFlat" />
+      <e p="DFlipFlopGate.cs" t="Include" />
+      <e p="Demux.cs" t="Include" />
+      <e p="FullAdder.cs" t="Include" />
+      <e p="Gate.cs" t="Include" />
+      <e p="HalfAdder.cs" t="Include" />
+      <e p="Memory.cs" t="Include" />
+      <e p="MultiBitAdder.cs" t="Include" />
+      <e p="MultiBitAndGate.cs" t="Include" />
+      <e p="MultiBitGate.cs" t="Include" />
+      <e p="MultiBitOrGate.cs" t="Include" />
+      <e p="MultiBitRegister.cs" t="Include" />
+      <e p="MuxGate.cs" t="Include" />
+      <e p="NAndGate.cs" t="Include" />
+      <e p="NotGate.cs" t="Include" />
+      <e p="OrGate.cs" t="Include" />
+      <e p="Program.cs" t="Include" />
+      <e p="Properties" t="Include">
+        <e p="AssemblyInfo.cs" t="Include" />
+      </e>
+      <e p="SequentialGate.cs" t="Include" />
+      <e p="SingleBitRegister.cs" t="Include" />
+      <e p="TwoInputGate.cs" t="Include" />
+      <e p="Wire.cs" t="Include" />
+      <e p="WireSet.cs" t="Include" />
+      <e p="XorGate.cs" t="Include" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

@@ -1,0 +1,35 @@
+D:/Research/projects/Computing Systems/Components/obj/x86/Debug/ResolveAssemblyReference.cache
+D:/Research/projects/Computing Systems/Components/bin/Debug/Components.exe
+D:/Research/projects/Computing Systems/Components/bin/Debug/Components.pdb
+D:/Research/projects/Computing Systems/Components/obj/x86/Debug/Components.exe
+D:/Research/projects/Computing Systems/Components/obj/x86/Debug/Components.pdb
+D:/teaching/Computing Systems/Excersizes/Ex1/Components/obj/x86/Debug/Components.exe
+D:/teaching/Computing Systems/Excersizes/Ex1/Components/obj/x86/Debug/Components.pdb
+D:/teaching/Computing Systems/Excersizes/Ex1/Components/bin/Debug/Components.exe
+D:/teaching/Computing Systems/Excersizes/Ex1/Components/bin/Debug/Components.pdb
+D:/teaching/Computing Systems/Excersizes/Ex1/Components/obj/x86/Debug/ResolveAssemblyReference.cache
+D:/Teaching/ECS/Excersises/Ex1/Components/obj/x86/Debug/Components.exe
+D:/Teaching/ECS/Excersises/Ex1/Components/obj/x86/Debug/Components.pdb
+D:/Teaching/ECS/2017/Ex1.1/Components.2014/Components/obj/x86/Debug/Components.exe
+D:/Teaching/ECS/2017/Ex1.1/Components.2014/Components/obj/x86/Debug/Components.pdb
+D:/Teaching/ECS/2017/Ex1.1/Components.2014/Components/bin/Debug/Components.exe
+D:/Teaching/ECS/2017/Ex1.1/Components.2014/Components/bin/Debug/Components.pdb
+D:/Teaching/ECS/2017/Ex1.1/Components.2014/Components/obj/x86/Debug/Components.csprojResolveAssemblyReference.cache
+D:/Teaching/ECS/2017/Ex1.1/Components/obj/x86/Debug/Components.exe
+D:/Teaching/ECS/2017/Ex1.1/Components/obj/x86/Debug/Components.pdb
+D:/Teaching/ECS/2018/Ex1.1/Components/bin/Debug/Components.exe
+D:/Teaching/ECS/2018/Ex1.1/Components/bin/Debug/Components.pdb
+D:/Teaching/ECS/2018/Ex1.1/Components/obj/x86/Debug/Components.csprojAssemblyReference.cache
+D:/Teaching/ECS/2018/Ex1.1/Components/obj/x86/Debug/Components.csproj.CoreCompileInputs.cache
+D:/Teaching/ECS/2018/Ex1.1/Components/obj/x86/Debug/Components.exe
+D:/Teaching/ECS/2018/Ex1.1/Components/obj/x86/Debug/Components.pdb
+D:/Teaching/ECS/Excersises/Ex1/Components/bin/Debug/Components.exe
+D:/Teaching/ECS/Excersises/Ex1/Components/bin/Debug/Components.pdb
+D:/Teaching/ECS/Excersises/Ex1/Components/obj/x86/Debug/Components.csprojAssemblyReference.cache
+D:/Teaching/ECS/Excersises/Ex1/Components/obj/x86/Debug/Components.csproj.CoreCompileInputs.cache
+/home/serfati/Desktop/Computer Struct/Components/bin/Debug/Components.exe
+/home/serfati/Desktop/Computer Struct/Components/bin/Debug/Components.pdb
+/home/serfati/Desktop/Computer Struct/Components/obj/x86/Debug/Components.csprojAssemblyReference.cache
+/home/serfati/Desktop/Computer Struct/Components/obj/x86/Debug/Components.csproj.CoreCompileInputs.cache
+/home/serfati/Desktop/Computer Struct/Components/obj/x86/Debug/Components.exe
+/home/serfati/Desktop/Computer Struct/Components/obj/x86/Debug/Components.pdb
