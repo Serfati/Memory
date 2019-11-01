@@ -9,35 +9,31 @@ namespace Components
 
     class MultiBitOrGate : MultiBitGate
     {
-        private OrGate[] OR;
-
         public MultiBitOrGate(int iInputCount)
             : base(iInputCount)
         {
-            OR = new OrGate[iInputCount - 1];
-            for (int i = 1; i < iInputCount; i++)
+            var orArray = new OrGate[iInputCount - 1];
+            for (int i = 0; i < orArray.Length; i++)
             {
-                if (i == 1)
+                orArray[i] = new OrGate();
+                if (i != 0)
                 {
-                    OR[0] = new OrGate();
-                    OR[0].ConnectInput1(m_wsInput[0]);
-                    OR[0].ConnectInput2(m_wsInput[1]);
+                    orArray[i].ConnectInput1(orArray[i - 1].Output);
+                    orArray[i].ConnectInput2(m_wsInput[i + 1]);
                 }
                 else
                 {
-                    OR[i - 1] = new OrGate();
-                    OR[i - 1].ConnectInput1(OR[i - 2].Output);
-                    OR[i - 1].ConnectInput2(m_wsInput[i]);
+                    orArray[0].ConnectInput1(m_wsInput[0]);
+                    orArray[0].ConnectInput2(m_wsInput[1]);
                 }
             }
-            Output.ConnectInput(OR[iInputCount-2].Output);
-
+            Output = orArray[orArray.Length - 1].Output;
         }
 
         public override bool TestGate()
         {
-            m_wsInput.SetValue(10);
-            Console.WriteLine("MultiOr..Is it true?    : " + this.m_wsInput.ToString()+"  --> "+Output);
+            m_wsInput.SetValue(1);
+            Console.WriteLine("MultiOr..Is it true? : " + m_wsInput+"--> "+Output);
             return true;
         }
     }

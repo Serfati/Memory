@@ -8,31 +8,32 @@ namespace Components
     //Multibit gates take as input k bits, and compute a function over all bits - z=f(x_0,x_1,...,x_k)
     class MultiBitAndGate : MultiBitGate
     {
-        private AndGate[] and;
-
         public MultiBitAndGate(int iInputCount)
             : base(iInputCount)
         {
-            //your code here
-            and = new AndGate[iInputCount - 1];
-            and[0] = new AndGate();
-            and[0].ConnectInput1(m_wsInput[0]);
-            and[0].ConnectInput2(m_wsInput[1]);
-            for (int i = 2; i<iInputCount; i++)
+            var and = new AndGate[iInputCount - 1];
+            for (int i = 0; i < and.Length; i++)
             {
-                and[i-1] = new AndGate();
-                and[i-1].ConnectInput1(and[i-2].Output);
-                and[i - 1].ConnectInput2(m_wsInput[i]);
+                and[i] = new AndGate();
+                if (i != 0)
+                {
+                    and[i].ConnectInput1(and[i - 1].Output);
+                    and[i].ConnectInput2(m_wsInput[i + 1]);
+                }
+                else
+                {
+                    and[0].ConnectInput1(m_wsInput[0]);
+                    and[0].ConnectInput2(m_wsInput[1]);
+                }
             }
-            Output.ConnectInput(and[iInputCount-2].Output);
-            
+            Output = and[and.Length - 1].Output;
         }
 
 
         public override bool TestGate()
         {
-            m_wsInput.SetValue(7);
-            Console.WriteLine("TESTING MultiAnd..Is it true?    : " + this.m_wsInput.ToString()+"  --> "+Output);
+            m_wsInput.SetValue(14);
+            Console.WriteLine("MultiAnd..Is it true? : " + m_wsInput+"--> "+Output);
             return true;
         }
     }

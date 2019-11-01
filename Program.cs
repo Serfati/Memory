@@ -27,7 +27,7 @@ namespace Components
             if (xor.TestGate())
                 Console.WriteLine("done xor");
             
-            MultiBitAndGate mbaGate = new MultiBitAndGate(3);
+            MultiBitAndGate mbaGate = new MultiBitAndGate(4);
             if (mbaGate.TestGate())
                 Console.WriteLine("done mba");
             

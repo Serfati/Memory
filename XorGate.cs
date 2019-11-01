@@ -9,32 +9,26 @@ namespace Components
     class XorGate : TwoInputGate
     {
         //A XOR B = (A ^ ~B)U(~A ^ B)
-        private NotGate m_gNot1;
-        private NotGate m_gNot2;
-        private AndGate m_gAnd1;
-        private AndGate m_gAnd2;
-        private OrGate m_gOr;
-
         public XorGate()
         {
             //init the gates
-            m_gNot1 = new NotGate();
-            m_gNot2 = new NotGate();
-            m_gAnd1 = new AndGate();
-            m_gAnd2 = new AndGate();
-            m_gOr = new OrGate();
+            var mGNot1 = new NotGate();
+            var mGNot2 = new NotGate();
+            var mGAnd1 = new AndGate();
+            var mGAnd2 = new AndGate();
+            var mGOr = new OrGate();
             //wire 
-            m_gAnd1.ConnectInput1(m_gNot1.Output);
-            m_gAnd1.ConnectInput2(m_gNot2.Input);
-            m_gAnd2.ConnectInput1(m_gNot1.Input);
-            m_gAnd2.ConnectInput2(m_gNot2.Output);
-            m_gOr.ConnectInput1(m_gAnd1.Output);
-            m_gOr.ConnectInput2(m_gAnd2.Output);
+            mGAnd1.ConnectInput1(mGNot1.Output);
+            mGAnd1.ConnectInput2(mGNot2.Input);
+            mGAnd2.ConnectInput1(mGNot1.Input);
+            mGAnd2.ConnectInput2(mGNot2.Output);
+            mGOr.ConnectInput1(mGAnd1.Output);
+            mGOr.ConnectInput2(mGAnd2.Output);
             
             //set the inputs and the output of the xor gate
-            Output = m_gOr.Output;
-            Input1 = m_gNot1.Input;
-            Input2 = m_gNot2.Input;
+            Output = mGOr.Output;
+            Input1 = mGNot1.Input;
+            Input2 = mGNot2.Input;
         }
 
         //an implementation of the ToString method is called, e.g. when we use Console.WriteLine(xor)

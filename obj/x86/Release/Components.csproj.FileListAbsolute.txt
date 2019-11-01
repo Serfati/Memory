@@ -1,0 +1,6 @@
+/home/serfati/Desktop/Computer Struct/Components/bin/Release/Components.exe
+/home/serfati/Desktop/Computer Struct/Components/bin/Release/Components.pdb
+/home/serfati/Desktop/Computer Struct/Components/obj/x86/Release/Components.csprojAssemblyReference.cache
+/home/serfati/Desktop/Computer Struct/Components/obj/x86/Release/Components.csproj.CoreCompileInputs.cache
+/home/serfati/Desktop/Computer Struct/Components/obj/x86/Release/Components.exe
+/home/serfati/Desktop/Computer Struct/Components/obj/x86/Release/Components.pdb
