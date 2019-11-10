@@ -18,7 +18,22 @@ namespace Components
         public Demux()
         {
             Input = new Wire();
-            //your code here
+            
+            var mGAnd1 = new AndGate();
+            var mGAnd2 = new AndGate();
+            var mGNot1 = new NotGate();
+            Control = new Wire();
+            
+            mGNot1.ConnectInput(Control);
+            
+            mGAnd2.ConnectInput1(Input);
+            mGAnd2.ConnectInput2(Control);
+            
+            mGAnd1.ConnectInput1(Input);
+            mGAnd1.ConnectInput2(mGNot1.Output);
+            
+            Output1 = mGAnd1.Output;
+            Output2 = mGAnd2.Output;
         }
 
         public void ConnectControl(Wire wControl)
@@ -29,12 +44,26 @@ namespace Components
         {
             Input.ConnectInput(wInput);
         }
-
-
-
+        
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            Input.Value = 1;
+            Control.Value = 1;
+            if ((Output1.Value != 0) || (Output2.Value != 1)) 
+                return false;
+            Input.Value = 0;
+            Control.Value = 0;
+            if ((Output1.Value != 0) ||(Output2.Value!=0))
+                return false;
+            Input.Value = 1;
+            Control.Value = 0;
+            if ((Output1.Value != 1) || (Output2.Value != 0)) 
+                return false;
+            Input.Value = 0;
+            Control.Value = 1;
+            if ((Output1.Value != 0) || (Output2.Value != 0)) 
+                return false;
+            return true;
         }
     }
 }

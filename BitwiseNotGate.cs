@@ -19,7 +19,13 @@ namespace Components
             Size = iSize;
             Input = new WireSet(Size);
             Output = new WireSet(Size);
-             //your code here
+            NotGate[] mgNot = new NotGate[Size];
+            for (int i = 0; i < Size; i++)
+            {
+                mgNot[i] = new NotGate();
+                mgNot[i].ConnectInput(Input[i]);
+                Output[i].ConnectInput(mgNot[i].Output);
+            }
         }
 
         public void ConnectInput(WireSet ws)
@@ -36,7 +42,19 @@ namespace Components
 
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            for (int j = 0; j < Math.Pow(2, Size); j++)
+            {
+                BitwiseNotGate mgNot = new BitwiseNotGate(Size);
+                WireSet ws = new WireSet(Size);
+                ws.SetValue(j);
+                mgNot.ConnectInput(ws);
+                for (int k = ws.Size - 1; k >= 0; k--)
+                {
+                    if (mgNot.Output[k].Value != ws[k].Value) continue;
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

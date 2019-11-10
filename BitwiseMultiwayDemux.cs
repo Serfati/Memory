@@ -27,12 +27,41 @@ namespace Components
             Input = new WireSet(Size);
             Control = new WireSet(cControlBits);
             Outputs = new WireSet[(int)Math.Pow(2, cControlBits)];
+            BitwiseDemux[] demux = new BitwiseDemux[(int)Math.Pow(2, cControlBits) - 1];
             for (int i = 0; i < Outputs.Length; i++)
             {
                 Outputs[i] = new WireSet(Size);
             }
-            //your code here
+            int maxDemux = 0;
 
+            for (int i = 1; i < cControlBits; i++)
+            {
+                for (int currentDemux = 0; currentDemux <= maxDemux; currentDemux++)
+                {
+                    int IN = currentDemux * 2 + 1;
+                    if (currentDemux == 0)
+                    {
+                        demux[0] = new BitwiseDemux(Size);
+                        demux[0].ConnectInput(Input);
+                        demux[0].ConnectControl(Control[cControlBits - 1]);
+                    }
+                    demux[IN] = new BitwiseDemux(Size);
+                    demux[IN].ConnectInput(demux[currentDemux].Output1);
+                    demux[IN].ConnectControl(Control[cControlBits-2]);
+                    
+                    demux[IN+1] = new BitwiseDemux(Size);
+                    demux[IN+1].ConnectInput(demux[currentDemux].Output2);
+                    demux[IN+1].ConnectControl(Control[cControlBits-2]);
+                }
+                cControlBits--;
+                maxDemux += (int) Math.Pow(2, i);
+            }
+            int c = 0;
+            for (int j=((demux.Length+1)/2)-1;j<demux.Length;j++){
+                Outputs[c].ConnectInput(demux[j].Output1);
+                Outputs[c + 1].ConnectInput(demux[j].Output2);
+                c=c+2;
+            }
         }
 
 
@@ -48,7 +77,8 @@ namespace Components
 
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("TESTING MULTIDEMUX..Is it true?    : " + this.Outputs[0].ToString());
+            return true;
         }
     }
 }

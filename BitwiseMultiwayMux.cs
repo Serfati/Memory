@@ -28,17 +28,33 @@ namespace Components
             Control = new WireSet(cControlBits);
             Inputs = new WireSet[(int)Math.Pow(2, cControlBits)];
             
-            for (int i = 0; i < Inputs.Length; i++)
+            WireSet[] wires = new WireSet[Inputs.Length];
+            BitwiseMux[] mux = new BitwiseMux[Inputs.Length-1];
+            int muxIn = 0;
+            for (int i = wires.Length - 1; i >= 0; i--)
             {
                 Inputs[i] = new WireSet(Size);
-                
+                wires[i] = new WireSet(Size);
+                wires[i] = Inputs[i];
             }
             
-            //your code here
-
+            int currentControl = 0;
+            for (int wiresLength = wires.Length; wiresLength >= 2 ; wiresLength /= 2)
+            {
+                int outIN = 0;
+                for (int i = 0; i < wiresLength; i += 2)
+                {
+                    mux[muxIn] = new BitwiseMux(Size);
+                    mux[muxIn].ConnectInput1(wires[i]);
+                    mux[muxIn].ConnectInput2(wires[i + 1]);
+                    mux[muxIn].ConnectControl(Control[currentControl]);
+                    wires[outIN] = mux[muxIn].Output;
+                    outIN++; muxIn++;
+                }
+                currentControl++;
+            }
+            Output.ConnectInput(mux[muxIn - 1].Output);
         }
-
-
         public void ConnectInput(int i, WireSet wsInput)
         {
             Inputs[i].ConnectInput(wsInput);
@@ -47,12 +63,11 @@ namespace Components
         {
             Control.ConnectInput(wsControl);
         }
-
-
-
+        
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("TESTING MULTIMUX..Is it true?    : " + this.Output.ToString());
+            return true;
         }
     }
 }

@@ -8,12 +8,18 @@ namespace Components
     //A two input bitwise gate takes as input two WireSets containing n wires, and computes a bitwise function - z_i=f(x_i,y_i)
     class BitwiseOrGate : BitwiseTwoInputGate
     {
-        //your code here
-
         public BitwiseOrGate(int iSize)
             : base(iSize)
         {
-            //your code here
+            OrGate[] mgOr=new OrGate[iSize];
+            
+            for (int i = 0; i < iSize; i++)
+            {
+                mgOr[i] = new OrGate();
+                mgOr[i].ConnectInput1(Input1[i]);
+                mgOr[i].ConnectInput2(Input2[i]);
+                Output[i].ConnectInput(mgOr[i].Output);
+            }
         }
 
         //an implementation of the ToString method is called, e.g. when we use Console.WriteLine(or)
@@ -25,7 +31,25 @@ namespace Components
 
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            BitwiseOrGate mgOr = new BitwiseOrGate(Size);
+            WireSet ws1 = new WireSet(Size);
+            WireSet ws2 = new WireSet(Size);
+            
+            for (int i = 0; i < Math.Pow(2, Size); i++)
+            {
+                ws1.SetValue(i);
+                for (int j = 0; j < Math.Pow(2, Size); j++)
+                {
+                    ws2.SetValue(j);
+                    mgOr.ConnectInput1(ws1);
+                    mgOr.ConnectInput2(ws2);
+                    
+                    
+                    if (mgOr.Output[j].Value == (ws1[j].Value | ws2[j].Value))
+                        return false;
+                }
+            }
+            return true;
         }
     }
 }

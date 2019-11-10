@@ -32,8 +32,11 @@ namespace Components
 
         public override bool TestGate()
         {
-            m_wsInput.SetValue(1);
-            Console.WriteLine("MultiOr..Is it true? : " + m_wsInput+"--> "+Output);
+            m_wsInput[0].Value = 0;
+            m_wsInput[1].Value = 0;
+            m_wsInput[2].Value = 1;
+            if (Output.Value != 1)
+                return false;
             return true;
         }
     }
