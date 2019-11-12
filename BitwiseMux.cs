@@ -30,16 +30,11 @@ namespace Components
             ControlInput.ConnectInput(wControl);
         }
 
-
-
         public override string ToString()
         {
             return "Mux " + Input1 + "," + Input2 + ",C" + ControlInput.Value + " -> " + Output;
         }
-
-
-
-
+        
         public override bool TestGate()
         {
             for (int k = 1; k >= 0; k--)

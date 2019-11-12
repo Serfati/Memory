@@ -59,17 +59,17 @@ namespace Components
 //            if (bwMux.TestGate())
 //                Console.WriteLine("done bwMux");
             
-            BitwiseDemux bwDemux = new BitwiseDemux(4);
-            if (bwDemux.TestGate())
-                Console.WriteLine("done bwDemux");
-
-            BitwiseMultiwayMux bwMwMux = new BitwiseMultiwayMux(4,2);
+//            BitwiseDemux bwDemux = new BitwiseDemux(4);
+//            if (bwDemux.TestGate())
+//                Console.WriteLine("done bwDemux");
+//
+            BitwiseMultiwayMux bwMwMux = new BitwiseMultiwayMux(3,3);
             if (bwMwMux.TestGate())
                 Console.WriteLine("done bwMwMux");
             
-            BitwiseMultiwayDemux bwMwDemux = new BitwiseMultiwayDemux(4,2);
-            if (bwMwDemux.TestGate())
-                Console.WriteLine("done bwMwDemux");
+//            BitwiseMultiwayDemux bwMwDemux = new BitwiseMultiwayDemux(3,3);
+//            if (bwMwDemux.TestGate())
+//                Console.WriteLine("done bwMwDemux");
             
             Console.WriteLine("FINISH HIM");
             Console.ReadLine();
