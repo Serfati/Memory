@@ -11,9 +11,9 @@ namespace Components
         public BitwiseAndGate(int iSize)
             : base(iSize)
         {
-            AndGate[] mgAnd=new AndGate[Size];
+            AndGate[] mgAnd=new AndGate[iSize];
 
-            for (int i = 0; i < Size; i++)
+            for (int i = 0; i < iSize; i++)
             {
                 mgAnd[i] = new AndGate();
                 mgAnd[i].ConnectInput1(Input1[i]);

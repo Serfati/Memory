@@ -37,22 +37,12 @@ namespace Components
                 wires[i] = new WireSet(Size);
                 wires[i] = Inputs[i];
             }
-            
             int currentControl = 0;
             for (int wiresLength = wires.Length; wiresLength >= 2 ; wiresLength /= 2)
             {
                 int outIN = 0;
                 for (int i = 0; i < wiresLength; i += 2)
                 {
-                    if (i == 0)
-                    {
-                        mux[0] = new BitwiseMux(Size);
-                        mux[0].ConnectInput1(wires[0]);
-                        mux[0].ConnectInput2(wires[1]);
-                        mux[0].ConnectControl(Control[0]);
-                        wires[0] = mux[0].Output;
-                        continue;
-                    }
                     mux[muxIn] = new BitwiseMux(Size);
                     if (currentControl <= cControlBits)
                     {
@@ -79,34 +69,36 @@ namespace Components
         
         public override bool TestGate()
         {
-            Inputs[0][0].Value = 0;
-            Inputs[0][1].Value = 0;
-            Inputs[0][2].Value = 1;
-            Inputs[1][0].Value = 0;
-            Inputs[1][1].Value = 1;
-            Inputs[1][2].Value = 1;
-            Inputs[2][0].Value = 1;
-            Inputs[2][1].Value = 0;
-            Inputs[2][2].Value = 1;
-            Inputs[3][0].Value = 1;
-            Inputs[3][1].Value = 1;
-            Inputs[3][2].Value = 1;
+            Control[0].Value = 1; Control[1].Value = 1;
+            Inputs[0][0].Value = 1; Inputs[0][1].Value = 1; Inputs[0][2].Value = 1;
+            Inputs[1][0].Value = 0; Inputs[1][1].Value = 1; Inputs[1][2].Value = 0;
+            Inputs[2][0].Value = 1; Inputs[2][1].Value = 0; Inputs[2][2].Value = 1;
+            Inputs[3][0].Value = 0; Inputs[3][1].Value = 1; Inputs[3][2].Value = 1;
+            if ((Output[0].Value != 0) || (Output[1].Value != 1) || (Output[2].Value != 1))
+                return false;
 
-            Control[0].Value = 0;
-            Control[1].Value = 1;
-            if (Output[0].Value != 1 || Output[1].Value != 1 || Output[2].Value != 0)
+            Control[0].Value = 0; Control[1].Value = 0;
+            Inputs[0][0].Value = 0; Inputs[0][1].Value = 0; Inputs[0][2].Value = 0;
+            Inputs[1][0].Value = 0; Inputs[1][1].Value = 1; Inputs[1][2].Value = 0;
+            Inputs[2][0].Value = 1; Inputs[2][1].Value = 0; Inputs[2][2].Value = 1;
+            Inputs[3][0].Value = 1; Inputs[3][1].Value = 0; Inputs[3][2].Value = 0;
+            if ((Output[0].Value != 0) || (Output[1].Value != 0) || (Output[2].Value != 0))
                 return false;
-            Control[0].Value = 0;
-            Control[1].Value = 0;
-            if (Output[0].Value != 0 || Output[1].Value != 0 || Output[2].Value != 1)
+            
+            Control[0].Value = 0; Control[1].Value = 1;
+            Inputs[0][0].Value = 0; Inputs[0][1].Value = 1; Inputs[0][2].Value = 0;
+            Inputs[1][0].Value = 1; Inputs[1][1].Value = 0; Inputs[1][2].Value = 1;
+            Inputs[2][0].Value = 0; Inputs[2][1].Value = 1; Inputs[2][2].Value = 0;
+            Inputs[3][0].Value = 1; Inputs[3][1].Value = 1; Inputs[3][2].Value = 0;
+            if ((Output[0].Value != 0) || (Output[1].Value != 1) || (Output[2].Value != 0))
                 return false;
-            Control[0].Value = 1;
-            Control[1].Value = 1;
-            if (Output[0].Value != 1 || Output[1].Value != 1 || Output[2].Value != 1)
-                return false;
-            Control[0].Value = 1;
-            Control[1].Value = 0;
-            if (Output[0].Value != 0 || Output[1].Value != 1 || Output[2].Value != 1)
+
+            Control[0].Value = 1; Control[1].Value = 0;
+            Inputs[0][0].Value = 0; Inputs[0][1].Value = 0; Inputs[0][2].Value = 0;
+            Inputs[1][0].Value = 1; Inputs[1][1].Value = 1; Inputs[1][2].Value = 1;
+            Inputs[2][0].Value = 1; Inputs[2][1].Value = 1; Inputs[2][2].Value = 0;
+            Inputs[3][0].Value = 0; Inputs[3][1].Value = 0; Inputs[3][2].Value = 1;
+            if ((Output[0].Value != 1) || (Output[1].Value != 1) || (Output[2].Value != 1))
                 return false;
             return true;
         }

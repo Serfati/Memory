@@ -43,8 +43,6 @@ namespace Components
                     ws2.SetValue(j);
                     mgOr.ConnectInput1(ws1);
                     mgOr.ConnectInput2(ws2);
-                    
-                    
                     if (mgOr.Output[j].Value == (ws1[j].Value | ws2[j].Value))
                         return false;
                 }

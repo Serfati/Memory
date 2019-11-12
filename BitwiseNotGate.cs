@@ -16,11 +16,10 @@ namespace Components
 
         public BitwiseNotGate(int iSize)
         {
-            Size = iSize;
-            Input = new WireSet(Size);
-            Output = new WireSet(Size);
-            NotGate[] mgNot = new NotGate[Size];
-            for (int i = 0; i < Size; i++)
+            Input = new WireSet(iSize);
+            Output = new WireSet(iSize);
+            NotGate[] mgNot = new NotGate[iSize];
+            for (int i = 0; i < iSize; i++)
             {
                 mgNot[i] = new NotGate();
                 mgNot[i].ConnectInput(Input[i]);
