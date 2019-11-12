@@ -1,0 +1,5 @@
+/home/serfati/Desktop/ECS/Components/obj/x86/Debug/.NETFramework,Version=v4.0,Profile=Client.AssemblyAttribute.cs
+/home/serfati/Desktop/ECS/Components/bin/Debug/Components.pdb
+/home/serfati/Desktop/ECS/Components/bin/Debug/Components.exe
+/home/serfati/Desktop/ECS/Components/obj/x86/Debug/Components.exe
+/home/serfati/Desktop/ECS/Components/obj/x86/Debug/Components.pdb

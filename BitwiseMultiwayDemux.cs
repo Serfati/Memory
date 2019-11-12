@@ -36,18 +36,20 @@ namespace Components
             demuxes[0].ConnectInput(Input);
             demuxes[0].ConnectControl(Control[cControlBits-1]);
            
-            for (int i = 0 ,k = 1, f = 1, currControl = cControlBits - 1; i < demuxes.Length; i++)
+            for (int i = 0 ,index0 = 1, nextStep = 1, currControl = cControlBits - 1; i < demuxes.Length; i++)
             {
                 demuxes[i] = new BitwiseDemux(Size);
-                if (i == k)
+                if (i != index0)
+                {
+                    demuxes[i].ConnectControl(Control[currControl]);
+                }
+                else
                 {
                     currControl--;
-                    k = k + f * 2;
-                    f = f * 2;
-                    demuxes[i].ConnectControl(Control[currControl]);
-                    continue;
+                    demuxes[index0].ConnectControl(Control[currControl]);
+                    index0 += nextStep * 2;
+                    nextStep *= 2;
                 }
-                demuxes[i].ConnectControl(Control[currControl]);
             }
 
             try
@@ -59,17 +61,11 @@ namespace Components
                     j = j + 2;
                     position++;
                 }
-                
-                int  currDemux = demuxes.Length - 1;
-                int index0 = demuxes.Length / 2 - 1;
-                for (int i =index0; i >= 0; i--)
-                {
+                for (int currDemux = demuxes.Length - 1,index0 = demuxes.Length /2 -1, i =index0 ; i >= 0; i--){
                     demuxes[currDemux].ConnectInput(demuxes[index0].Output2);
                     demuxes[currDemux - 1].ConnectInput(demuxes[index0].Output1);
                     index0--;
-                    currDemux -= 2;
-                }
-
+                    currDemux -= 2; }
                 demuxes[0].ConnectInput(Input);
             }
             catch (Exception e)

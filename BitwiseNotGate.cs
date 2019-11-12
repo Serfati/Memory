@@ -20,8 +20,9 @@ namespace Components
             Output = new WireSet(iSize);
             NotGate[] mgNot = new NotGate[iSize];
             for (int i = 0; i < iSize; i++)
-            {
                 mgNot[i] = new NotGate();
+            for (int i = 0; i < iSize; i++)
+            {
                 mgNot[i].ConnectInput(Input[i]);
                 Output[i].ConnectInput(mgNot[i].Output);
             }
@@ -43,14 +44,14 @@ namespace Components
         {
             for (int j = 0; j < Math.Pow(2, Size); j++)
             {
-                BitwiseNotGate mgNot = new BitwiseNotGate(Size);
-                WireSet ws = new WireSet(Size);
+                var mgNot = new BitwiseNotGate(Size);
+                var ws = new WireSet(Size);
                 ws.SetValue(j);
                 mgNot.ConnectInput(ws);
                 for (int k = ws.Size - 1; k >= 0; k--)
                 {
-                    if (mgNot.Output[k].Value != ws[k].Value) continue;
-                    return false;
+                    if (mgNot.Output[k].Value != ws[k].Value)
+                                return false;
                 }
             }
             return true;

@@ -12,10 +12,11 @@ namespace Components
             : base(iSize)
         {
             AndGate[] mgAnd=new AndGate[iSize];
+            for (int i = 0; i < iSize; i++)
+                mgAnd[i] = new AndGate();
 
             for (int i = 0; i < iSize; i++)
             {
-                mgAnd[i] = new AndGate();
                 mgAnd[i].ConnectInput1(Input1[i]);
                 mgAnd[i].ConnectInput2(Input2[i]);
                 Output[i].ConnectInput(mgAnd[i].Output);
@@ -37,16 +38,15 @@ namespace Components
                 ws1.SetValue(i);
                 for (int j = 0; j < Math.Pow(2, Size); j++)
                 {
-                    BitwiseAndGate mgAnd = new BitwiseAndGate(Size);
+                    var mgAnd = new BitwiseAndGate(Size);
                     var ws2 = new WireSet(Size);
                     ws2.SetValue(j);
                     mgAnd.ConnectInput1(ws1);
                     mgAnd.ConnectInput2(ws2);
-
                     for (int k = 0; k < ws2.Size; k++)
                     {
-                        if (mgAnd.Output[k].Value == (ws1[k].Value & ws2[k].Value)) continue;
-                        return false;
+                        if (mgAnd.Output[k].Value != (ws1[k].Value & ws2[k].Value))
+                             return false;
                     }
                 }
             }
