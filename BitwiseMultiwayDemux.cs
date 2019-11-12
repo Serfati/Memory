@@ -18,50 +18,64 @@ namespace Components
         public WireSet Input { get; private set; }
         public WireSet Control { get; private set; }
         public WireSet[] Outputs { get; private set; }
-
-        //your code here
-
+        
         public BitwiseMultiwayDemux(int iSize, int cControlBits)
         {
             Size = iSize;
             Input = new WireSet(Size);
             Control = new WireSet(cControlBits);
-            Outputs = new WireSet[(int) Math.Pow(2, cControlBits)];
-            BitwiseDemux[] demux = new BitwiseDemux[Outputs.Length - 1];
+            Outputs = new WireSet[(int)Math.Pow(2, cControlBits)];
             for (int i = 0; i < Outputs.Length; i++)
             {
                 Outputs[i] = new WireSet(Size);
             }
-
-            int maxDemux = 0;
-            int currControl = cControlBits;
-            for (int i = 1; i < currControl; currControl--, i++, maxDemux += (int) Math.Pow(2, i))
+            
+            BitwiseDemux[] demuxes = new BitwiseDemux[Outputs.Length - 1];
+            
+            demuxes[0] = new BitwiseDemux(Size);
+            demuxes[0].ConnectInput(Input);
+            demuxes[0].ConnectControl(Control[cControlBits-1]);
+           
+            for (int i = 0 ,k = 1, f = 1, currControl = cControlBits - 1; i < demuxes.Length; i++)
             {
-                int currentDemux = 0;
-                while (currentDemux <= maxDemux)
+                demuxes[i] = new BitwiseDemux(Size);
+                if (i == k)
                 {
-                    int IN = currentDemux * 2 + 1;
-                    demux[IN] = new BitwiseDemux(Size);
-                    demux[IN + 1] = new BitwiseDemux(Size);
-//                    if (currentDemux == 0)
-//                    {
-//                        demux[0] = new BitwiseDemux(Size);
-//                        demux[0].ConnectInput(Input);
-//                        demux[0].ConnectControl(Control[cControlBits - 1]);
-//                    }
-                    demux[IN].ConnectInput(demux[currentDemux].Output1);
-                    demux[IN].ConnectControl(Control[currControl - 2]);
-                    demux[IN + 1].ConnectInput(demux[currentDemux].Output2);
-                    demux[IN + 1].ConnectControl(Control[currControl - 2]);
-
-                    currentDemux++;
+                    currControl--;
+                    k = k + f * 2;
+                    f = f * 2;
+                    demuxes[i].ConnectControl(Control[currControl]);
+                    continue;
                 }
+                demuxes[i].ConnectControl(Control[currControl]);
             }
 
-            for (int j = Outputs.Length / 2 - 1, index0 = 0; j < Outputs.Length - 1; j++, index0 += 2)
+            try
             {
-                Outputs[index0].ConnectInput(demux[j].Output1);
-                Outputs[index0 + 1].ConnectInput(demux[j].Output2);
+                for (int position = demuxes.Length / 2, j = 0, i = demuxes.Length / 2; i >= 0; i--)
+                {
+                    Outputs[j].ConnectInput(demuxes[position].Output1);
+                    Outputs[j + 1].ConnectInput(demuxes[position].Output2);
+                    j = j + 2;
+                    position++;
+                }
+                
+                int  currDemux = demuxes.Length - 1;
+                int index0 = demuxes.Length / 2 - 1;
+                for (int i =index0; i >= 0; i--)
+                {
+                    demuxes[currDemux].ConnectInput(demuxes[index0].Output2);
+                    demuxes[currDemux - 1].ConnectInput(demuxes[index0].Output1);
+                    index0--;
+                    currDemux -= 2;
+                }
+
+                demuxes[0].ConnectInput(Input);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
 
@@ -78,23 +92,23 @@ namespace Components
         public override bool TestGate()
         {
             Control[0].Value = 0; Control[1].Value = 0;
-            Input[0].Value = 0; Input[1].Value = 0; Input[2].Value = 0;
-            if ( Outputs[0][0].Value != 0 || Outputs[0][1].Value != 0 || Outputs[0][2].Value != 0)
+            Input[0].Value = 1; Input[1].Value = 0; Input[2].Value = 1;
+            if ( Outputs[0][0].Value != 1 || Outputs[0][1].Value != 0 || Outputs[0][2].Value != 1)
                 return false;
             
             Control[0].Value = 1; Control[1].Value = 1;
-            Input[0].Value = 1; Input[1].Value = 1; Input[2].Value = 0;
-            if (Outputs[3][0].Value != 1 || Outputs[3][1].Value != 1 || Outputs[3][2].Value != 0)
+            Input[0].Value = 0; Input[1].Value = 0; Input[2].Value = 1;
+            if (Outputs[3][0].Value != 0 || Outputs[3][1].Value != 0 || Outputs[3][2].Value != 1)
                 return false;
             
             Control[0].Value = 1; Control[1].Value = 0;
-            Input[0].Value = 1; Input[1].Value = 1; Input[2].Value = 0;
-            if (Outputs[1][0].Value != 1 || Outputs[1][1].Value != 1 || Outputs[1][2].Value != 0)
+            Input[0].Value = 0; Input[1].Value = 0; Input[2].Value = 1;
+            if (Outputs[1][0].Value != 0 || Outputs[1][1].Value != 0 || Outputs[1][2].Value != 1)
                 return false;
             
             Control[0].Value = 0; Control[1].Value = 1;
-            Input[0].Value = 1; Input[1].Value = 1; Input[2].Value = 1;
-            if ( Outputs[2][0].Value != 1 || Outputs[2][1].Value != 1 || Outputs[2][2].Value != 1)
+            Input[0].Value = 0; Input[1].Value = 0; Input[2].Value = 0;
+            if ( Outputs[2][0].Value != 0 || Outputs[2][1].Value != 0 || Outputs[2][2].Value != 0)
                 return false;
             
             return true;
