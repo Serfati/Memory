@@ -36,19 +36,19 @@ namespace Components
             demuxes[0].ConnectInput(Input);
             demuxes[0].ConnectControl(Control[cControlBits-1]);
            
-            for (int i = 0 ,index0 = 1, nextStep = 1, currControl = cControlBits - 1; i < demuxes.Length; i++)
+            for (int i = 0 ,index2 = 1, nextStep = 1, currControl = cControlBits - 1; i < demuxes.Length; i++)
             {
                 demuxes[i] = new BitwiseDemux(Size);
-                if (i != index0)
+                if (i == index2)
                 {
-                    demuxes[i].ConnectControl(Control[currControl]);
+                    demuxes[index2].ConnectControl(Control[currControl]);
+                    currControl--;
+                    index2 = index2+ nextStep * 2;
+                    nextStep = nextStep *  2;
                 }
                 else
                 {
-                    currControl--;
-                    demuxes[index0].ConnectControl(Control[currControl]);
-                    index0 += nextStep * 2;
-                    nextStep *= 2;
+                    demuxes[i].ConnectControl(Control[currControl]);
                 }
             }
 
@@ -61,18 +61,20 @@ namespace Components
                     j = j + 2;
                     position++;
                 }
-                for (int currDemux = demuxes.Length - 1,index0 = demuxes.Length /2 -1, i =index0 ; i >= 0; i--){
+
+                for (int currDemux = demuxes.Length - 1, index0 = demuxes.Length / 2 - 1, i = index0; i >= 0; i--)
+                {
                     demuxes[currDemux].ConnectInput(demuxes[index0].Output2);
                     demuxes[currDemux - 1].ConnectInput(demuxes[index0].Output1);
                     index0--;
-                    currDemux -= 2; }
-                demuxes[0].ConnectInput(Input);
+                    currDemux -= 2;
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                Console.WriteLine(e.Message);
             }
+            finally{demuxes[0].ConnectInput(Input);}
         }
 
         public void ConnectInput(WireSet wsInput)

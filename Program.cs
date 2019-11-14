@@ -22,7 +22,7 @@ namespace Components
 //            if (or.TestGate())
 //                Console.WriteLine("done or");
 //
-//            //test xor gate
+            //test xor gate
 //            XorGate xor = new XorGate();
 //            if (xor.TestGate())
 //                Console.WriteLine("done xor");
@@ -51,28 +51,32 @@ namespace Components
 //            if (bwNg.TestGate())
 //                Console.WriteLine("done bwNg");
 ////            
-//            BitwiseOrGate bwOg = new BitwiseOrGate(4);
-//            if (bwOg.TestGate())
-//                Console.WriteLine("done bwOg");
-////            
-//            BitwiseMux bwMux = new BitwiseMux(4);
-//            if (bwMux.TestGate())
-//                Console.WriteLine("done bwMux");
+            BitwiseOrGate bwOg = new BitwiseOrGate(4);
+            if (bwOg.TestGate())
+                Console.WriteLine("done bwOg");
             
-//            BitwiseDemux bwDemux = new BitwiseDemux(4);
-//            if (bwDemux.TestGate())
-//                Console.WriteLine("done bwDemux");
-//
-//            BitwiseMultiwayMux bwMwMux = new BitwiseMultiwayMux(3,3);
-//            if (bwMwMux.TestGate())
-//                Console.WriteLine("done bwMwMux");
+            
+            WireSet ws = new WireSet(4);
+            ws.SetValue(8);
+            Console.WriteLine(ws.ToString());
+//            
+            BitwiseMux bwMux = new BitwiseMux(4);
+            if (bwMux.TestGate())
+                Console.WriteLine("done bwMux");
+            
+            BitwiseDemux bwDemux = new BitwiseDemux(4);
+            if (bwDemux.TestGate())
+                Console.WriteLine("done bwDemux");
+
+            BitwiseMultiwayMux bwMwMux = new BitwiseMultiwayMux(3,3);
+            if (bwMwMux.TestGate())
+                Console.WriteLine("done bwMwMux");
             
             BitwiseMultiwayDemux bwMwDemux = new BitwiseMultiwayDemux(3,3);
             if (bwMwDemux.TestGate())
                 Console.WriteLine("done bwMwDemux");
             
             Console.WriteLine("FINISH HIM");
-            Console.ReadLine();
         }
     }
 }
