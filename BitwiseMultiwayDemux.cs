@@ -33,18 +33,17 @@ namespace Components
             BitwiseDemux[] demuxes = new BitwiseDemux[Outputs.Length - 1];
             
             demuxes[0] = new BitwiseDemux(Size);
-            demuxes[0].ConnectInput(Input);
             demuxes[0].ConnectControl(Control[cControlBits-1]);
-           
-            for (int i = 0 ,index2 = 1, nextStep = 1, currControl = cControlBits - 1; i < demuxes.Length; i++)
+
+            for (int i = 1 ,index2 = 1, nextStep = 1, currControl = cControlBits - 1; i < demuxes.Length; i++)
             {
                 demuxes[i] = new BitwiseDemux(Size);
                 if (i == index2)
                 {
-                    demuxes[index2].ConnectControl(Control[currControl]);
                     currControl--;
-                    index2 = index2+ nextStep * 2;
-                    nextStep = nextStep *  2;
+                    demuxes[index2].ConnectControl(Control[currControl]);
+                    index2 += nextStep * 2;
+                    nextStep *=  2;
                 }
                 else
                 {
@@ -74,7 +73,9 @@ namespace Components
             {
                 Console.WriteLine(e.Message);
             }
-            finally{demuxes[0].ConnectInput(Input);}
+
+            demuxes[0].ConnectInput(Input);
+           
         }
 
         public void ConnectInput(WireSet wsInput)
@@ -89,25 +90,32 @@ namespace Components
 
         public override bool TestGate()
         {
-            Control[0].Value = 0; Control[1].Value = 0;
-            Input[0].Value = 1; Input[1].Value = 0; Input[2].Value = 1;
-            if ( Outputs[0][0].Value != 1 || Outputs[0][1].Value != 0 || Outputs[0][2].Value != 1)
-                return false;
+            try
+            {
+                Control[0].Value = 0; Control[1].Value = 0;
+                Input[0].Value = 1; Input[1].Value = 0; Input[2].Value = 1;
+                if ( Outputs[0][0].Value != 1 || Outputs[0][1].Value != 0 || Outputs[0][2].Value != 1)
+                    return false;
             
-            Control[0].Value = 1; Control[1].Value = 1;
-            Input[0].Value = 0; Input[1].Value = 0; Input[2].Value = 1;
-            if (Outputs[3][0].Value != 0 || Outputs[3][1].Value != 0 || Outputs[3][2].Value != 1)
-                return false;
+                Control[0].Value = 1; Control[1].Value = 1;
+                Input[0].Value = 0; Input[1].Value = 0; Input[2].Value = 1;
+                if (Outputs[3][0].Value != 0 || Outputs[3][1].Value != 0 || Outputs[3][2].Value != 1)
+                    return false;
             
-            Control[0].Value = 1; Control[1].Value = 0;
-            Input[0].Value = 0; Input[1].Value = 0; Input[2].Value = 1;
-            if (Outputs[1][0].Value != 0 || Outputs[1][1].Value != 0 || Outputs[1][2].Value != 1)
-                return false;
+                Control[0].Value = 1; Control[1].Value = 0;
+                Input[0].Value = 0; Input[1].Value = 0; Input[2].Value = 1;
+                if (Outputs[1][0].Value != 0 || Outputs[1][1].Value != 0 || Outputs[1][2].Value != 1)
+                    return false;
             
-            Control[0].Value = 0; Control[1].Value = 1;
-            Input[0].Value = 0; Input[1].Value = 0; Input[2].Value = 0;
-            if ( Outputs[2][0].Value != 0 || Outputs[2][1].Value != 0 || Outputs[2][2].Value != 0)
-                return false;
+                Control[0].Value = 0; Control[1].Value = 1;
+                Input[0].Value = 0; Input[1].Value = 0; Input[2].Value = 0;
+                if ( Outputs[2][0].Value != 0 || Outputs[2][1].Value != 0 || Outputs[2][2].Value != 0)
+                    return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             
             return true;
         }

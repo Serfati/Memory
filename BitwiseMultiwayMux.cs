@@ -69,37 +69,44 @@ namespace Components
         
         public override bool TestGate()
         {
-            Control[0].Value = 1; Control[1].Value = 1;
-            Inputs[0][0].Value = 1; Inputs[0][1].Value = 1; Inputs[0][2].Value = 1;
-            Inputs[1][0].Value = 0; Inputs[1][1].Value = 1; Inputs[1][2].Value = 0;
-            Inputs[2][0].Value = 1; Inputs[2][1].Value = 0; Inputs[2][2].Value = 1;
-            Inputs[3][0].Value = 0; Inputs[3][1].Value = 1; Inputs[3][2].Value = 1;
-            if ((Output[0].Value != 0) || (Output[1].Value != 1) || (Output[2].Value != 1))
-                return false;
+            try
+            {
+                Control[0].Value = 1; Control[1].Value = 1;
+                Inputs[0][0].Value = 1; Inputs[0][1].Value = 1; Inputs[0][2].Value = 1;
+                Inputs[1][0].Value = 0; Inputs[1][1].Value = 1; Inputs[1][2].Value = 0;
+                Inputs[2][0].Value = 1; Inputs[2][1].Value = 0; Inputs[2][2].Value = 1;
+                Inputs[3][0].Value = 0; Inputs[3][1].Value = 1; Inputs[3][2].Value = 1;
+                if ((Output[0].Value != 0) || (Output[1].Value != 1) || (Output[2].Value != 1))
+                    return false;
 
-            Control[0].Value = 0; Control[1].Value = 0;
-            Inputs[0][0].Value = 0; Inputs[0][1].Value = 0; Inputs[0][2].Value = 0;
-            Inputs[1][0].Value = 0; Inputs[1][1].Value = 1; Inputs[1][2].Value = 0;
-            Inputs[2][0].Value = 1; Inputs[2][1].Value = 0; Inputs[2][2].Value = 1;
-            Inputs[3][0].Value = 1; Inputs[3][1].Value = 0; Inputs[3][2].Value = 0;
-            if ((Output[0].Value != 0) || (Output[1].Value != 0) || (Output[2].Value != 0))
-                return false;
+                Control[0].Value = 0; Control[1].Value = 0;
+                Inputs[0][0].Value = 0; Inputs[0][1].Value = 0; Inputs[0][2].Value = 0;
+                Inputs[1][0].Value = 0; Inputs[1][1].Value = 1; Inputs[1][2].Value = 0;
+                Inputs[2][0].Value = 1; Inputs[2][1].Value = 0; Inputs[2][2].Value = 1;
+                Inputs[3][0].Value = 1; Inputs[3][1].Value = 0; Inputs[3][2].Value = 0;
+                if ((Output[0].Value != 0) || (Output[1].Value != 0) || (Output[2].Value != 0))
+                    return false;
             
-            Control[0].Value = 0; Control[1].Value = 1;
-            Inputs[0][0].Value = 0; Inputs[0][1].Value = 1; Inputs[0][2].Value = 0;
-            Inputs[1][0].Value = 1; Inputs[1][1].Value = 0; Inputs[1][2].Value = 1;
-            Inputs[2][0].Value = 0; Inputs[2][1].Value = 1; Inputs[2][2].Value = 0;
-            Inputs[3][0].Value = 1; Inputs[3][1].Value = 1; Inputs[3][2].Value = 0;
-            if ((Output[0].Value != 0) || (Output[1].Value != 1) || (Output[2].Value != 0))
-                return false;
+                Control[0].Value = 0; Control[1].Value = 1;
+                Inputs[0][0].Value = 0; Inputs[0][1].Value = 1; Inputs[0][2].Value = 0;
+                Inputs[1][0].Value = 1; Inputs[1][1].Value = 0; Inputs[1][2].Value = 1;
+                Inputs[2][0].Value = 0; Inputs[2][1].Value = 1; Inputs[2][2].Value = 0;
+                Inputs[3][0].Value = 1; Inputs[3][1].Value = 1; Inputs[3][2].Value = 0;
+                if ((Output[0].Value != 0) || (Output[1].Value != 1) || (Output[2].Value != 0))
+                    return false;
 
-            Control[0].Value = 1; Control[1].Value = 0;
-            Inputs[0][0].Value = 0; Inputs[0][1].Value = 0; Inputs[0][2].Value = 0;
-            Inputs[1][0].Value = 1; Inputs[1][1].Value = 1; Inputs[1][2].Value = 1;
-            Inputs[2][0].Value = 1; Inputs[2][1].Value = 1; Inputs[2][2].Value = 0;
-            Inputs[3][0].Value = 0; Inputs[3][1].Value = 0; Inputs[3][2].Value = 1;
-            if ((Output[0].Value != 1) || (Output[1].Value != 1) || (Output[2].Value != 1))
-                return false;
+                Control[0].Value = 1; Control[1].Value = 0;
+                Inputs[0][0].Value = 0; Inputs[0][1].Value = 0; Inputs[0][2].Value = 0;
+                Inputs[1][0].Value = 1; Inputs[1][1].Value = 1; Inputs[1][2].Value = 1;
+                Inputs[2][0].Value = 1; Inputs[2][1].Value = 1; Inputs[2][2].Value = 0;
+                Inputs[3][0].Value = 0; Inputs[3][1].Value = 0; Inputs[3][2].Value = 1;
+                if ((Output[0].Value != 1) || (Output[1].Value != 1) || (Output[2].Value != 1))
+                    return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             return true;
         }
     }

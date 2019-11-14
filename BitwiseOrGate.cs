@@ -57,7 +57,6 @@ namespace Components
             catch (Exception e)
             {
                 Console.WriteLine(e.Message+" "+ e.HelpLink);
-                return true;
             }
             return true;
         }

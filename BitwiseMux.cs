@@ -37,31 +37,38 @@ namespace Components
         
         public override bool TestGate()
         {
-            for (int k = 1; k >= 0; k--)
+            try
             {
-                ControlInput.Value = k;
-                for (int i = 0; i < Math.Pow(2, Size); i++)
+                for (int k = 1; k >= 0; k--)
                 {
-                    for (int j = 0; j < Math.Pow(2, Size); j++)
+                    ControlInput.Value = k;
+                    for (int i = 0; i < Math.Pow(2, Size); i++)
                     {
-                        BitwiseMux mgMux = new BitwiseMux(Size);
-                        WireSet ws2 = new WireSet(Size);
-                        WireSet ws1 = new WireSet(Size);
-                        ws1.SetValue(i);
-                        ws2.SetValue(j);
-                        mgMux.ConnectInput1(ws1);
-                        mgMux.ConnectInput2(ws2);
-                        mgMux.ConnectControl(ControlInput);
-                        for (int f = Size - 1; f >= 0; f--)
-                            if (k == 0)
-                            {
-                                if (mgMux.Output[f].Value == ws1[f].Value) continue;
-                                return false;
-                            }
-                            else if (mgMux.Output[f].Value != ws2[f].Value)
-                                return false;
+                        for (int j = 0; j < Math.Pow(2, Size); j++)
+                        {
+                            BitwiseMux mgMux = new BitwiseMux(Size);
+                            WireSet ws2 = new WireSet(Size);
+                            WireSet ws1 = new WireSet(Size);
+                            ws1.SetValue(i);
+                            ws2.SetValue(j);
+                            mgMux.ConnectInput1(ws1);
+                            mgMux.ConnectInput2(ws2);
+                            mgMux.ConnectControl(ControlInput);
+                            for (int f = Size - 1; f >= 0; f--)
+                                if (k == 0)
+                                {
+                                    if (mgMux.Output[f].Value == ws1[f].Value) continue;
+                                    return false;
+                                }
+                                else if (mgMux.Output[f].Value != ws2[f].Value)
+                                    return false;
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
             return true;
         }
