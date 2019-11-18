@@ -73,9 +73,7 @@ namespace Components
             {
                 Console.WriteLine(e.Message);
             }
-
-            demuxes[0].ConnectInput(Input);
-           
+            finally{demuxes[0].ConnectInput(Input);}
         }
 
         public void ConnectInput(WireSet wsInput)

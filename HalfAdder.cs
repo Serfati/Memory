@@ -9,15 +9,24 @@ namespace Components
 
     class HalfAdder : TwoInputGate
     {
-        public Wire CarryOutput { get; private set; }
-
-        //your code here
+        public Wire CarryOutput { get; }
 
 
         public HalfAdder()
         {
-            //your code here
+            CarryOutput = new Wire();
+            
+            var gXor = new XorGate();
+            var gAnd = new AndGate();
+            
+            Input1 = gAnd.Input1;
+            Input2 = gAnd.Input2;
+            
+            gXor.ConnectInput1(Input1);
+            gXor.ConnectInput2(Input2);
 
+            Output = gXor.Output;
+            CarryOutput = gAnd.Output;
         }
 
 
@@ -28,7 +37,23 @@ namespace Components
 
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            Input1.Value = 1;
+            Input2.Value = 1;
+            if ((Output.Value != 0) || (CarryOutput.Value != 1))
+                return false;
+            Input1.Value = 0;
+            Input2.Value = 0;
+            if ((Output.Value != 0)||(CarryOutput.Value != 0))
+                return false;
+            Input1.Value = 1;
+            Input2.Value = 0;
+            if ((Output.Value != 1) || (CarryOutput.Value != 0))
+                return false;
+            Input1.Value = 0;
+            Input2.Value = 1;
+            if ((Output.Value != 1) || (CarryOutput.Value != 0))
+                return false;
+            return true;
         }
     }
 }

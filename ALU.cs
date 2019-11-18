@@ -10,27 +10,24 @@ namespace Components
     class ALU : Gate
     {
         //The word size = number of bit in the input and output
-        public int Size { get; private set; }
+        public int Size { get; }
 
         //Input and output n bit numbers
-        public WireSet InputX { get; private set; }
-        public WireSet InputY { get; private set; }
-        public WireSet Output { get; private set; }
+        public WireSet InputX { get; }
+        public WireSet InputY { get; }
+        public WireSet Output { get; }
 
         //Control bit 
-        public Wire ZeroX { get; private set; }
-        public Wire ZeroY { get; private set; }
-        public Wire NotX { get; private set; }
-        public Wire NotY { get; private set; }
-        public Wire F { get; private set; }
-        public Wire NotOutput { get; private set; }
+        public Wire ZeroX { get; }
+        public Wire ZeroY { get; }
+        public Wire NotX { get; }
+        public Wire NotY { get; }
+        public Wire F { get; }
+        public Wire NotOutput { get; }
 
         //Bit outputs
-        public Wire Zero { get; private set; }
-        public Wire Negative { get; private set; }
-
-
-        //your code here
+        public Wire Zero { get; }
+        public Wire Negative { get; }
 
         public ALU(int iSize)
         {
@@ -45,15 +42,130 @@ namespace Components
             NotOutput = new Wire();
             Negative = new Wire();            
             Zero = new Wire();
-            
+            Output = new WireSet(Size);
 
-            //Create and connect all the internal components
+            var zx = new BitwiseMux(Size);
+            var zy = new BitwiseMux(Size);
+            var nx = new BitwiseMux(Size);
+            var ny = new BitwiseMux(Size);
+            var fx = new BitwiseMux(Size);
+            var nOut = new BitwiseMux(Size);
+
+            var notX = new BitwiseNotGate(Size);
+            var notY = new BitwiseNotGate(Size);
+            var notOut = new BitwiseNotGate(Size);
+            var notCheckzero = new BitwiseNotGate(Size);
+
+            var fAdder = new MultiBitAdder(Size);
+            var fAnd = new BitwiseAndGate(Size);
+
+            var negCheck = new MultiBitAdder(Size);
+            var zeroCheck = new MultiBitAndGate(Size);
+
+            //zx//
+            WireSet zeroXWire = new WireSet(Size);
+            zx.ConnectInput1(InputX);
+            zx.ConnectInput2(zeroXWire);
+            zx.ConnectControl(ZeroX);
+
+            //nx//
+            nx.ConnectInput1(zx.Output);
+            notX.ConnectInput(zx.Output);
+            nx.ConnectInput2(notX.Output);
+            nx.ConnectControl(NotX);
+
+            //zy//
+            WireSet zeroYWire = new WireSet(Size);
+            zy.ConnectInput1(InputY);
+            zy.ConnectInput2(zeroYWire);
+            zy.ConnectControl(ZeroY);
+
+            //ny//
+            ny.ConnectInput1(zy.Output);
+            notY.ConnectInput(zy.Output);
+            ny.ConnectInput2(notY.Output);
+            ny.ConnectControl(NotY);
+
+            //f//
+            fAnd.ConnectInput1(nx.Output);
+            fAnd.ConnectInput2(ny.Output);
+            fAdder.ConnectInput1(nx.Output);
+            fAdder.ConnectInput2(ny.Output);
+            fx.ConnectInput1(fAnd.Output);
+            fx.ConnectInput2(fAdder.Output);
+            fx.ConnectControl(F);
+
+            //not Output
+            nOut.ConnectInput1(fx.Output);
+            notOut.ConnectInput(fx.Output);
+            nOut.ConnectInput2(notOut.Output);
+            nOut.ConnectControl(NotOutput);
+
+            
+            Output = nOut.Output;
+            
+            //negative number check
+            negCheck.ConnectInput1(nOut.Output);
+            negCheck.ConnectInput2(nOut.Output);
+            Negative = negCheck.Overflow;
+
+            //Zero number check
+            notCheckzero.ConnectInput(nOut.Output);
+            zeroCheck.ConnectInput(notCheckzero.Output);
+            Zero = zeroCheck.Output;
 
         }
 
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            InputX.Set2sComplement(5);
+            InputY.Set2sComplement(5);
+            ZeroX.Value = 1;
+            NotX.Value = 1;
+            ZeroY.Value = 0;
+            NotY.Value = 0;
+            F.Value = 0;
+            NotOutput.Value = 1;
+            Console.WriteLine("Case 1: " + Output.Get2sComplement());
+            Console.WriteLine("Negative?: " + Negative.Value);
+            Console.WriteLine("Zero?: " + Zero.Value);
+            Console.WriteLine("");
+            
+            InputX.Set2sComplement(5);
+            InputY.Set2sComplement(5);
+            ZeroX.Value = 0;
+            NotX.Value = 0;
+            ZeroY.Value = 1;
+            NotY.Value = 1;
+            F.Value = 0;
+            NotOutput.Value = 0;
+            Console.WriteLine("Case 2: " + Output.Get2sComplement());
+            Console.WriteLine("Negative?: " + Negative.Value);
+            Console.WriteLine("Zero?: " + Zero.Value);
+            Console.WriteLine("");
+            
+            InputX.SetValue(6);
+            InputY.SetValue(5);
+            
+            ZeroX.Value = 0;
+            NotX.Value = 0;
+            ZeroY.Value = 1;
+            NotY.Value = 1;
+            F.Value = 0;
+            NotOutput.Value = 1;
+            if (Output.Get2sComplement() != -7 || Zero.Value != 0 || Negative.Value != 1)
+                return false;
+            
+            ZeroX.Value = 1; 
+            ZeroY.Value = 1;
+            NotX.Value = 0;
+            NotY.Value = 0;
+            F.Value = 1;
+            NotOutput.Value = 0;
+            if (Output.Get2sComplement() != 0 || Zero.Value != 1 || Negative.Value != 0)
+                return false;
+            
+            return true;
         }
     }
 }

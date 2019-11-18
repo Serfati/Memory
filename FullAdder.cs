@@ -10,15 +10,27 @@ namespace Components
     {
         public Wire CarryInput { get; private set; }
         public Wire CarryOutput { get; private set; }
-
-        //your code here
-
-
+        
         public FullAdder()
         {
             CarryInput = new Wire();
-            //your code here
+            CarryOutput = new Wire();
+            
+            var halfAdd1 = new HalfAdder();
+            var halfAdd2 = new HalfAdder();
+            var gOr = new OrGate();
 
+            halfAdd2.ConnectInput2(CarryInput);
+            halfAdd2.ConnectInput1(halfAdd1.Output);
+            
+            gOr.ConnectInput1(halfAdd1.CarryOutput);
+            gOr.ConnectInput2(halfAdd2.CarryOutput);
+            
+            Input1 = halfAdd1.Input1;
+            Input2 = halfAdd1.Input2;
+            
+            CarryOutput = gOr.Output;
+            Output = halfAdd2.Output;
         }
 
 
@@ -29,7 +41,27 @@ namespace Components
 
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            Input1.Value = 0;
+            Input2.Value = 0;
+            CarryInput.Value = 0;
+            if ((Output.Value != 0) || (CarryOutput.Value != 0))
+                return false;
+            Input1.Value = 0;
+            Input2.Value = 1;
+            CarryInput.Value = 0;
+            if ((Output.Value !=1) || (CarryOutput.Value != 0))
+                return false;
+            Input1.Value = 1;
+            Input2.Value = 0;
+            CarryInput.Value = 0;
+            if ((Output.Value != 1) || (CarryOutput.Value != 0))
+                return false;
+            Input1.Value = 1;
+            Input2.Value = 1;
+            CarryInput.Value = 0;
+            if ((Output.Value != 0) || (CarryOutput.Value != 1))
+                return false;
+            return true;
         }
     }
 }

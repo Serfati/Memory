@@ -27,7 +27,7 @@ namespace Components
             Output = new WireSet(Size);
             Control = new WireSet(cControlBits);
             Inputs = new WireSet[(int)Math.Pow(2, cControlBits)];
-            
+
             WireSet[] wires = new WireSet[Inputs.Length];
             BitwiseMux[] mux = new BitwiseMux[Inputs.Length-1];
             int muxIn = 0;
@@ -37,8 +37,9 @@ namespace Components
                 wires[i] = new WireSet(Size);
                 wires[i] = Inputs[i];
             }
-            int currentControl = 0;
-            for (int wiresLength = wires.Length; wiresLength >= 2 ; wiresLength /= 2)
+            try
+            {
+            for (int currentControl = 0, wiresLength = wires.Length; wiresLength >= 2 ; wiresLength /= 2,currentControl++)
             {
                 int outIN = 0;
                 for (int i = 0; i < wiresLength; i += 2)
@@ -54,9 +55,13 @@ namespace Components
                         muxIn++;
                     }
                 }
-                currentControl++;
             }
             Output.ConnectInput(mux[muxIn - 1].Output);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
         public void ConnectInput(int i, WireSet wsInput)
         {
@@ -66,7 +71,7 @@ namespace Components
         {
             Control.ConnectInput(wsControl);
         }
-        
+
         public override bool TestGate()
         {
             try
@@ -86,7 +91,7 @@ namespace Components
                 Inputs[3][0].Value = 1; Inputs[3][1].Value = 0; Inputs[3][2].Value = 0;
                 if ((Output[0].Value != 0) || (Output[1].Value != 0) || (Output[2].Value != 0))
                     return false;
-            
+
                 Control[0].Value = 0; Control[1].Value = 1;
                 Inputs[0][0].Value = 0; Inputs[0][1].Value = 1; Inputs[0][2].Value = 0;
                 Inputs[1][0].Value = 1; Inputs[1][1].Value = 0; Inputs[1][2].Value = 1;

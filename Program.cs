@@ -72,10 +72,38 @@ namespace Components
 //            if (bwMwMux.TestGate())
 //                Console.WriteLine("done bwMwMux");
             
-            BitwiseMultiwayDemux bwMwDemux = new BitwiseMultiwayDemux(3,3);
-            if (bwMwDemux.TestGate())
-                Console.WriteLine("done bwMwDemux");
-            
+
+            OrGate or = new OrGate();
+            XorGate xor = new XorGate();
+            AndGate and = new AndGate();
+            MuxGate mux = new MuxGate();
+            Demux demux = new Demux();
+            HalfAdder halfAdder = new HalfAdder();
+            FullAdder fullAdder = new FullAdder();
+            WireSet wireSet = new WireSet(9);
+            BitwiseAndGate bwag = new BitwiseAndGate(2);
+            BitwiseNotGate bwng = new BitwiseNotGate(3);
+            BitwiseOrGate bwog = new BitwiseOrGate(2);
+            BitwiseMux bwm = new BitwiseMux(2);
+            BitwiseDemux bwd = new BitwiseDemux(2);
+            MultiBitAndGate mbag = new MultiBitAndGate(4);
+            MultiBitAdder mba = new MultiBitAdder(3);
+            BitwiseMultiwayMux bwmwm = new BitwiseMultiwayMux(5, 4);
+            BitwiseMultiwayDemux bwmwd = new BitwiseMultiwayDemux(4, 4);
+            SingleBitRegister sbr = new SingleBitRegister();
+            MultiBitRegister mbr = new MultiBitRegister(4);
+            wireSet.SetValue(137);
+            wireSet.Set2sComplement(-32);
+            if (halfAdder.TestGate())
+                Console.WriteLine("HAbugbug");
+            if (fullAdder.TestGate())
+                Console.WriteLine("FAbugbug");
+            if (mba.TestGate())
+                Console.WriteLine("MultiBitAdderbugbug");
+            ALU alu = new ALU(16);
+            if (alu.TestGate())
+                Console.WriteLine("ALU bugbug");
+
             Console.WriteLine("FINISH HIM");
         }
     }

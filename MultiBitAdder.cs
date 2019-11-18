@@ -9,22 +9,52 @@ namespace Components
     class MultiBitAdder : Gate
     {
         //Word size - number of bits in each input
-        public int Size { get; private set; }
+        public int Size { get; }
 
-        public WireSet Input1 { get; private set; }
-        public WireSet Input2 { get; private set; }
-        public WireSet Output { get; private set; }
+        public WireSet Input1 { get; }
+        public WireSet Input2 { get; }
+        public WireSet Output { get; }
         //An overflow bit for the summation computation
-        public Wire Overflow { get; private set; }
-
+        public Wire Overflow { get;}
 
         public MultiBitAdder(int iSize)
         {
             Size = iSize;
-            Input1 = new WireSet(Size);
-            Input2 = new WireSet(Size);
-            Output = new WireSet(Size);
-            //your code here
+            Overflow = new Wire();
+            Input1 = new WireSet(iSize);
+            Input2 = new WireSet(iSize);
+            Output = new WireSet(iSize);
+            var fullAdders = new FullAdder[iSize];
+
+            try
+            {
+                for (int i = 0; i < iSize; i++)
+                {
+                    if (i == 0)
+                    {
+                        fullAdders[i] = new FullAdder();
+                        fullAdders[i].CarryInput.Value = 0;
+                        fullAdders[i].ConnectInput1(Input1[i]);
+                        fullAdders[i].ConnectInput2(Input2[i]);
+                        Output[i].ConnectInput(fullAdders[i].Output);
+                        continue;
+                    }
+
+                    fullAdders[i] = new FullAdder();
+                    fullAdders[i].ConnectInput1(Input1[i]);
+                    fullAdders[i].ConnectInput2(Input2[i]);
+                    fullAdders[i].CarryInput.ConnectInput(fullAdders[i - 1].CarryOutput);
+                    Output[i].ConnectInput(fullAdders[i].Output);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                Overflow = fullAdders[iSize - 1].CarryOutput;
+            }
 
         }
 
@@ -45,7 +75,23 @@ namespace Components
 
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            Input1[0].Value = 1; Input1[1].Value = 0; Input1[2].Value = 1;
+            Input2[0].Value = 1; Input2[1].Value = 1; Input2[2].Value = 0;
+            if ((Output[0].Value != 0) || (Output[1].Value != 0) || (Output[2].Value != 0) || (Overflow.Value != 1))
+                return false;
+            Input1[0].Value = 1; Input1[1].Value = 0; Input1[2].Value = 1;
+            Input2[0].Value = 0; Input2[1].Value = 0; Input2[2].Value = 1;
+            if ((Output[0].Value != 1) || (Output[1].Value != 0) || (Output[2].Value != 0) || (Overflow.Value != 1))
+                return false;
+            Input1[0].Value = 0; Input1[1].Value = 1; Input1[2].Value = 1;
+            Input2[0].Value = 0; Input2[1].Value = 1; Input2[2].Value = 0;
+            if ((Output[0].Value != 0) || (Output[1].Value != 0) || (Output[2].Value != 0) || (Overflow.Value != 1))
+                return false;
+            Input1[0].Value = 1; Input1[1].Value = 1; Input1[2].Value = 1;
+            Input2[0].Value = 1; Input2[1].Value = 1; Input2[2].Value = 1;
+            if ((Output[0].Value != 0) || (Output[1].Value != 1) || (Output[2].Value != 1) || (Overflow.Value != 1))
+                return false;
+            return true;
         }
     }
 }

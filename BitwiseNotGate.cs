@@ -50,7 +50,7 @@ namespace Components
                 mgNot.ConnectInput(ws);
                 for (int k = ws.Size - 1; k >= 0; k--)
                 {
-                    if (mgNot.Output[k].Value != ws[k].Value)
+                    if (mgNot.Output[k].Value == ws[k].Value)
                                 return false;
                 }
             }
