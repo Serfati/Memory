@@ -41,32 +41,34 @@ namespace Components
             Zero = new Wire();
             Output = new WireSet(Size);
 
-            var zx = new BitwiseMux(Size);
-            var zy = new BitwiseMux(Size);
-            var nx = new BitwiseMux(Size);
-            var ny = new BitwiseMux(Size);
+            
             var fx = new BitwiseMux(Size);
-            var nOut = new BitwiseMux(Size);
-
-            var notX = new BitwiseNotGate(Size);
-            var notY = new BitwiseNotGate(Size);
-            var notOut = new BitwiseNotGate(Size);
-            var notCheckzero = new BitwiseNotGate(Size);
-
             var fAdder = new MultiBitAdder(Size);
             var fAnd = new BitwiseAndGate(Size);
             
-            var zeroCheck = new MultiBitAndGate(Size);
+            var notX = new BitwiseNotGate(Size);
+            var notY = new BitwiseNotGate(Size);
             
+            var notCheckzero = new BitwiseNotGate(Size);
+            var zeroCheck = new MultiBitAndGate(Size);
+            var nOut = new BitwiseMux(Size);
+            var notOut = new BitwiseNotGate(Size);
+
+            var nx = new BitwiseMux(Size);
+            var ny = new BitwiseMux(Size);
+            var zx = new BitwiseMux(Size);
+            var zy = new BitwiseMux(Size);
+
             var wireX0 = new WireSet(iSize);
-             wireX0.Set2sComplement(0);
             var wireY0 = new WireSet(iSize);
+             wireX0.Set2sComplement(0);
              wireY0.Set2sComplement(0);
              
             try
             {
                 //zx//
                 var zeroXWire = new WireSet(Size);
+                zeroXWire.Set2sComplement(0);
                 zx.ConnectInput1(InputX);
                 zx.ConnectInput2(zeroXWire);
                 zx.ConnectControl(ZeroX);
@@ -93,6 +95,7 @@ namespace Components
             {
                 //zy//
                 var zeroYWire = new WireSet(Size);
+                zeroYWire.Set2sComplement(0);
                 zy.ConnectInput1(InputY);
                 zy.ConnectInput2(zeroYWire);
                 zy.ConnectControl(ZeroY);
@@ -118,12 +121,15 @@ namespace Components
             try
             {
                 //f//
-                fAnd.ConnectInput1(nx.Output);
-                fAnd.ConnectInput2(ny.Output);
                 fAdder.ConnectInput1(nx.Output);
                 fAdder.ConnectInput2(ny.Output);
+                
+                fAnd.ConnectInput1(nx.Output);
+                fAnd.ConnectInput2(ny.Output);
+
                 fx.ConnectInput1(fAnd.Output);
                 fx.ConnectInput2(fAdder.Output);
+                
                 fx.ConnectControl(F);
             }
             catch (Exception e)
@@ -134,8 +140,8 @@ namespace Components
 
             try
             {
-                nOut.ConnectInput1(fx.Output);
                 notOut.ConnectInput(fx.Output);
+                nOut.ConnectInput1(fx.Output);
                 nOut.ConnectInput2(notOut.Output);
                 nOut.ConnectControl(NotOutput);
             
