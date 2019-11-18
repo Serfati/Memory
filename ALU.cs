@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Components
 {
@@ -58,62 +55,114 @@ namespace Components
 
             var fAdder = new MultiBitAdder(Size);
             var fAnd = new BitwiseAndGate(Size);
-
-            var negCheck = new MultiBitAdder(Size);
+            
             var zeroCheck = new MultiBitAndGate(Size);
-
-            //zx//
-            WireSet zeroXWire = new WireSet(Size);
-            zx.ConnectInput1(InputX);
-            zx.ConnectInput2(zeroXWire);
-            zx.ConnectControl(ZeroX);
-
-            //nx//
-            nx.ConnectInput1(zx.Output);
-            notX.ConnectInput(zx.Output);
-            nx.ConnectInput2(notX.Output);
-            nx.ConnectControl(NotX);
-
-            //zy//
-            WireSet zeroYWire = new WireSet(Size);
-            zy.ConnectInput1(InputY);
-            zy.ConnectInput2(zeroYWire);
-            zy.ConnectControl(ZeroY);
-
-            //ny//
-            ny.ConnectInput1(zy.Output);
-            notY.ConnectInput(zy.Output);
-            ny.ConnectInput2(notY.Output);
-            ny.ConnectControl(NotY);
-
-            //f//
-            fAnd.ConnectInput1(nx.Output);
-            fAnd.ConnectInput2(ny.Output);
-            fAdder.ConnectInput1(nx.Output);
-            fAdder.ConnectInput2(ny.Output);
-            fx.ConnectInput1(fAnd.Output);
-            fx.ConnectInput2(fAdder.Output);
-            fx.ConnectControl(F);
-
-            //not Output
-            nOut.ConnectInput1(fx.Output);
-            notOut.ConnectInput(fx.Output);
-            nOut.ConnectInput2(notOut.Output);
-            nOut.ConnectControl(NotOutput);
-
             
-            Output = nOut.Output;
+            var wireX0 = new WireSet(iSize);
+             wireX0.Set2sComplement(0);
+            var wireY0 = new WireSet(iSize);
+             wireY0.Set2sComplement(0);
+             
+            try
+            {
+                //zx//
+                var zeroXWire = new WireSet(Size);
+                zx.ConnectInput1(InputX);
+                zx.ConnectInput2(zeroXWire);
+                zx.ConnectControl(ZeroX);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("zx exp" + e.Message);
+            }
+
+            try
+            {
+                //nx//
+                nx.ConnectInput1(zx.Output);
+                notX.ConnectInput(zx.Output);
+                nx.ConnectInput2(notX.Output);
+                nx.ConnectControl(NotX);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("nx exp" + e.Message);
+            }
+
+            try
+            {
+                //zy//
+                var zeroYWire = new WireSet(Size);
+                zy.ConnectInput1(InputY);
+                zy.ConnectInput2(zeroYWire);
+                zy.ConnectControl(ZeroY);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("zy exp" + e.Message);
+            }
+
+            try
+            {
+                //ny//
+                ny.ConnectInput1(zy.Output);
+                notY.ConnectInput(zy.Output);
+                ny.ConnectInput2(notY.Output);
+                ny.ConnectControl(NotY);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ny exp" + e.Message);
+            }
+
+            try
+            {
+                //f//
+                fAnd.ConnectInput1(nx.Output);
+                fAnd.ConnectInput2(ny.Output);
+                fAdder.ConnectInput1(nx.Output);
+                fAdder.ConnectInput2(ny.Output);
+                fx.ConnectInput1(fAnd.Output);
+                fx.ConnectInput2(fAdder.Output);
+                fx.ConnectControl(F);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("f exp" + e.Message);
+                throw;
+            }
+
+            try
+            {
+                nOut.ConnectInput1(fx.Output);
+                notOut.ConnectInput(fx.Output);
+                nOut.ConnectInput2(notOut.Output);
+                nOut.ConnectControl(NotOutput);
             
-            //negative number check
-            negCheck.ConnectInput1(nOut.Output);
-            negCheck.ConnectInput2(nOut.Output);
-            Negative = negCheck.Overflow;
+                /*********************************/
+                Output = nOut.Output;
+                /*********************************/
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("not Output exp" + e.Message);
+            }
 
-            //Zero number check
-            notCheckzero.ConnectInput(nOut.Output);
-            zeroCheck.ConnectInput(notCheckzero.Output);
-            Zero = zeroCheck.Output;
+            try
+            {
+                //negative number check
+                Negative = Output[Size - 1];
 
+                //Zero number check
+                notCheckzero.ConnectInput(nOut.Output);
+                zeroCheck.ConnectInput(notCheckzero.Output);
+                Zero.ConnectInput(zeroCheck.Output);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Output info exp" + e.Message);
+                throw;
+            }
         }
 
         public override bool TestGate()
