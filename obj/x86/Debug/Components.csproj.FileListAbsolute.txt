@@ -39,3 +39,8 @@ D:/Teaching/ECS/Excersises/Ex1/Components/obj/x86/Debug/Components.csproj.CoreCo
 /home/serfati/Desktop/ECS/Components/obj/x86/Debug/Components.csproj.CoreCompileInputs.cache
 /home/serfati/Desktop/ECS/Components/obj/x86/Debug/Components.exe
 /home/serfati/Desktop/ECS/Components/obj/x86/Debug/Components.pdb
+/home/serfati/Desktop/Memory/bin/Debug/Components.exe
+/home/serfati/Desktop/Memory/bin/Debug/Components.pdb
+/home/serfati/Desktop/Memory/obj/x86/Debug/Components.csprojAssemblyReference.cache
+/home/serfati/Desktop/Memory/obj/x86/Debug/Components.exe
+/home/serfati/Desktop/Memory/obj/x86/Debug/Components.pdb

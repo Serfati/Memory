@@ -19,6 +19,14 @@ namespace Components
             Input = new Wire();
             Load = new Wire();
             //your code here 
+            
+            var gMux = new MuxGate();
+            var gFlipFlop = new DFlipFlopGate();
+            gMux.ConnectInput1(Input);
+            gMux.ConnectControl(Load);
+            gMux.ConnectInput2(gFlipFlop.Output);
+            gFlipFlop.ConnectInput(gMux.Output);
+            Output = gFlipFlop.Output;
 
         }
 
@@ -37,7 +45,13 @@ namespace Components
 
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            Input.Value = 0;
+            Load.Value = 1;
+            Clock.ClockDown();
+            Clock.ClockUp();
+            if (Output.Value != 0)
+                return false;
+            return true;
         }
     }
 }

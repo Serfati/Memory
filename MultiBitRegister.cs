@@ -24,6 +24,15 @@ namespace Components
             Output = new WireSet(Size);
             Load = new Wire();
             //your code here
+            
+            SingleBitRegister[] bitRegisters=new SingleBitRegister[iSize];
+            
+            for(int i = 0; i < Size; i++){
+                bitRegisters[i] = new SingleBitRegister();
+                bitRegisters[i].ConnectInput(Input[i]);
+                bitRegisters[i].ConnectLoad(Load);
+                Output[i].ConnectInput(bitRegisters[i].Output);
+            }
 
         }
 
@@ -41,7 +50,13 @@ namespace Components
 
         public override bool TestGate()
         {
-            throw new NotImplementedException();
+            Input.Set2sComplement(5);
+            Load.Value = 1;
+            Clock.ClockDown();
+            Clock.ClockUp();
+            if (Output.Get2sComplement() != 5)
+                return false;
+            return true;
         }
     }
 }
