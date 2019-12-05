@@ -37,26 +37,25 @@ namespace Components
             var mBitwiseMultiwayDemux = new BitwiseMultiwayDemux(1, AddressSize);
             var mBitwiseMultiwayMux = new BitwiseMultiwayMux(WordSize, AddressSize);
             var mRegisters = new MultiBitRegister[numOfbits];
-            
+            mRegisters[0] = new MultiBitRegister(iWordSize);
             for (int i = 0; i < numOfbits; i++)
             {
                 if (i == 0)
                 {
                      mBitwiseMultiwayDemux.Input[0].ConnectInput(Load);
                      mBitwiseMultiwayDemux.ConnectControl(Address);
-                     mBitwiseMultiwayMux.ConnectControl(Address);
-                     mRegisters[0] = new MultiBitRegister(iWordSize);
+                     
                      mRegisters[0].ConnectInput(Input);
                      mRegisters[0].Load.ConnectInput(mBitwiseMultiwayDemux.Outputs[0][0]);
                      mBitwiseMultiwayMux.ConnectInput(0, mRegisters[0].Output);
                      continue;
-                     
                 }
                 mRegisters[i] = new MultiBitRegister(iWordSize);
                 mRegisters[i].ConnectInput(Input);
                 mRegisters[i].Load.ConnectInput(mBitwiseMultiwayDemux.Outputs[i][0]);
                 mBitwiseMultiwayMux.ConnectInput(i, mRegisters[i].Output);
             }
+            mBitwiseMultiwayMux.ConnectControl(Address);
             Output = mBitwiseMultiwayMux.Output;
         }
 
@@ -85,11 +84,13 @@ namespace Components
 
         public override bool TestGate()
         {
-            Input.Set2sComplement(5);
+            Input.Set2sComplement(22);
+            Address.Set2sComplement(4);
             Load.Value = 1;
             Clock.ClockDown();
             Clock.ClockUp();
-            if (Output.Get2sComplement() != 5)
+            Load.Value=0;
+            if (Output.Get2sComplement() != 22)
                 return false;
             return true;
         }
